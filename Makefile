@@ -50,10 +50,6 @@ docker-all: docker
 	$(DOCKER_BUILD) -f Dockerfile -t $(REGISTRY)/oauth2-proxy:latest-amd64 .
 	$(DOCKER_BUILD) -f Dockerfile -t $(REGISTRY)/oauth2-proxy:${VERSION} .
 	$(DOCKER_BUILD) -f Dockerfile -t $(REGISTRY)/oauth2-proxy:${VERSION}-amd64 .
-	$(DOCKER_BUILD) -f Dockerfile.arm64 -t $(REGISTRY)/oauth2-proxy:latest-arm64 .
-	$(DOCKER_BUILD) -f Dockerfile.arm64 -t $(REGISTRY)/oauth2-proxy:${VERSION}-arm64 .
-	$(DOCKER_BUILD) -f Dockerfile.armv6 -t $(REGISTRY)/oauth2-proxy:latest-armv6 .
-	$(DOCKER_BUILD) -f Dockerfile.armv6 -t $(REGISTRY)/oauth2-proxy:${VERSION}-armv6 .
 
 .PHONY: docker-push
 docker-push:
@@ -64,10 +60,6 @@ docker-push-all: docker-push
 	docker push $(REGISTRY)/oauth2-proxy:latest-amd64
 	docker push $(REGISTRY)/oauth2-proxy:${VERSION}
 	docker push $(REGISTRY)/oauth2-proxy:${VERSION}-amd64
-	docker push $(REGISTRY)/oauth2-proxy:latest-arm64
-	docker push $(REGISTRY)/oauth2-proxy:${VERSION}-arm64
-	docker push $(REGISTRY)/oauth2-proxy:latest-armv6
-	docker push $(REGISTRY)/oauth2-proxy:${VERSION}-armv6
 
 .PHONY: generate
 generate:
