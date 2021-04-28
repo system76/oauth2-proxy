@@ -3,8 +3,10 @@ package providers
 import (
 	"context"
 	"fmt"
+	"net/url"
 
 	"github.com/oauth2-proxy/oauth2-proxy/v7/pkg/apis/sessions"
+	"github.com/oauth2-proxy/oauth2-proxy/v7/pkg/logger"
 	"github.com/oauth2-proxy/oauth2-proxy/v7/pkg/requests"
 )
 
@@ -17,13 +19,13 @@ var _ Provider = (*System76Provider)(nil)
 
 const (
 	system76ProviderName  = "System76"
-	system76DefaultsScope = "profile:read"
+	system76DefaultScope = "profile:read"
 )
 
 var (
 	// Default Login URL for System76.
 	// Pre-parsed URL of https://accounts.system76.com/oauth/authorize.
-	googleDefaultLoginURL = &url.URL{
+	system76DefaultLoginURL = &url.URL{
 		Scheme: "https",
 		Host:   "account.system76.com",
 		Path:   "/oauth/authorize",
@@ -32,7 +34,7 @@ var (
 
 	// Default Redeem URL for System76.
 	// Pre-parsed URL of https://accounts.system76.com/oauth/token.
-	googleDefaultRedeemURL = &url.URL{
+	system76DefaultRedeemURL = &url.URL{
 		Scheme: "https",
 		Host:   "account.system76.com",
 		Path:   "/oauth/token",
@@ -58,13 +60,13 @@ func NewSystem76Provider(p *ProviderData) *System76Provider {
 		scope:       system76DefaultScope,
 	})
 	return &System76Provider{
-		ProviderData: p
+		ProviderData: p,
 	}
 }
 
 // EnrichSession uses the Recognizer settings endpoint to populate the session's email.
 func (p *System76Provider) EnrichSession(ctx context.Context, s *sessions.SessionState) error {
-	json, err := requests.New(p.profileURL).
+	json, err := requests.New(p.ProfileURL.String()).
 		WithContext(ctx).
 		SetHeader("Authorization", "Bearer "+s.AccessToken).
 		Do().

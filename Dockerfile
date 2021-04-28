@@ -25,11 +25,10 @@ RUN VERSION=${VERSION} make build && touch jwt_signing_key.pem
 # Copy binary to alpine
 FROM alpine:3.13
 
-COPY nsswitch.conf /etc/nsswitch.conf
-
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY --from=builder /go/src/github.com/oauth2-proxy/oauth2-proxy/oauth2-proxy /bin/oauth2-proxy
 COPY --from=builder /go/src/github.com/oauth2-proxy/oauth2-proxy/jwt_signing_key.pem /etc/ssl/private/jwt_signing_key.pem
+COPY --from=builder /go/src/github.com/oauth2-proxy/oauth2-proxy/nsswitch.conf /etc/nsswitch.conf
+COPY --from=builder /go/src/github.com/oauth2-proxy/oauth2-proxy/oauth2-proxy /bin/oauth2-proxy
 
 USER 2000:2000
 
