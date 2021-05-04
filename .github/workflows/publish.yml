@@ -19,8 +19,8 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: system76
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: 5iMON-bot
+          password: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Publish
         uses: docker/build-push-action@v2
