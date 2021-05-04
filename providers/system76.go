@@ -82,5 +82,13 @@ func (p *System76Provider) EnrichSession(ctx context.Context, s *sessions.Sessio
 	}
 	s.Email = email
 
+	staff, err := json.Get("user").Get("staff").Bool()
+	if err != nil {
+		return fmt.Errorf("unable to extract staff bool from settings endpoint: %v", err)
+	}
+	if staff {
+		s.Groups = append(s.Groups, "staff")
+	}
+
 	return nil
 }
