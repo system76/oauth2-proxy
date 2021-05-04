@@ -26,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: system76/oauth2-proxy:latest
+          tags: ghcr.io/system76/oauth2-proxy:latest
